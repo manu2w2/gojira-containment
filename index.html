@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MANDO NAVAL // REGISTRO DE ORIGEN TITÁNICO</title>
+  
+  <!-- Tipografías Tácticas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,700;1,400&family=Montserrat:wght@400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="hull-theme">
+
+  <!-- Capas de Efectos Globales -->
+  <div id="crt-overlay"></div>
+  <div id="flashbang"></div>
+  <div id="particles-container"></div>
+
+  <!-- FASE 1: TERMINAL TÁCTICA -->
+  <section id="terminal-overlay" class="terminal-screen">
+    <div class="bunker-panel">
+      <div class="panel-header">
+        <span class="status-beacon amber"></span>
+        <code class="sys-code">[ NAV-SPEC 09 // TITAN ORIGIN LOG ]</code>
+      </div>
+      
+      <h1 class="terminal-title">OPERACIÓN: LIBERACIÓN TITÁNICA</h1>
+      <div class="security-badge">ALERTA OMEGA: ENTIDAD TITÁNICA DETECTADA</div>
+      
+      <p class="terminal-body">
+        Los registros confirman que una entidad de clase Titán acaba de nacer y permanece confinada en esta instalación. Los sistemas de seguridad mantienen su cámara sellada y el reactor alimenta los mecanismos de contención.
+        No podemos abrir la cámara desde el exterior. Tendrás que desactivar los sistemas de seguridad y provocar una sobrecarga del reactor para abrirle paso a la libertad.
+      </p>
+
+      <button id="btn-start" class="tactical-btn">
+        <span class="btn-border"></span>
+        [ INICIAR OPERACIÓN DE RESCATE ]
+      </button>
+    </div>
+  </section>
+
+  <!-- FASE 2: CONSOLA DE PRESIÓN Y VISUALIZADOR -->
+  <main id="main-dossier" class="dossier-container hidden">
+    
+    <header class="dossier-header">
+      <span class="classification-tag">[ NAVAL COMMAND // CLASSIFIED ]</span>
+      <h1 class="glitch-title">REGISTRO DE SURGIMIENTO</h1>
+      <p class="subtitle">Estatus de presencia y nivel de sobrecarga Atomica</p>
+    </header>
+
+    <section class="grid-cards">
+      <div class="info-card">
+        <span class="card-label">ORGANISMO:</span>
+        <span class="card-value">TITANUS GOJIRA</span>
+      </div>
+      <div class="info-card">
+        <span class="card-label">ESTATUS:</span>
+        <span class="card-value highlight-amber">CONFINADO // ACTIVIDAD DETECTADA</span>
+      </div>
+      <div class="info-card">
+        <span class="card-label">NIVEL DE RADIACIÓN</span>
+        <span class="card-value highlight-cyan">SOBRECARGA ATOMICA (100%)</span>
+      </div>
+    </section>
+
+    <!-- PALANCAS MECÁNICAS DE SEGURIDAD (ARRIBA DEL RADAR) -->
+    <section class="failsafe-section">
+      <h3 class="section-title">DESACTIVACIÓN DE LOS SISTEMAS DE CONTENCIÓN</h3>
+      <p class="section-desc">Desactiva los tres bloqueos para interrumpir la contención y preparar la sobrecarga del reactor:</p>
+      
+      <div class="switches-grid">
+        <div class="switch-card">
+          <span class="switch-label">BOMBA DE DESAGÜE</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="switch-1" class="safety-switch">
+            <span class="toggle-lever"></span>
+          </label>
+          <span id="led-1" class="status-led green">ACTIVADA</span>
+        </div>
+
+        <div class="switch-card">
+          <span class="switch-label">VÁLVULA DE REFRIGERACION</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="switch-2" class="safety-switch">
+            <span class="toggle-lever"></span>
+          </label>
+          <span id="led-2" class="status-led green">ACTIVADA</span>
+        </div>
+
+        <div class="switch-card">
+          <span class="switch-label">SELLO DE SEGURIDAD</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="switch-3" class="safety-switch">
+            <span class="toggle-lever"></span>
+          </label>
+          <span id="led-3" class="status-led green">ACTIVADA</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISUAL SONAR CON GODZILLA MEJORADO -->
+    <section class="sonar-display">
+      <div class="radar-sweep"></div>
+      
+<div class="svg-wrapper">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" class="godzilla-svg" role="img" aria-label="Silueta de Godzilla en el sonar">
+          <defs>
+            <filter id="atomic-glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="8" result="blur1" />
+              <feGaussianBlur stdDeviation="3" result="blur2" />
+              <feMerge>
+                <feMergeNode in="blur1" />
+                <feMergeNode in="blur2" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+
+            <filter id="eye-glow" x="-200%" y="-200%" width="500%" height="500%">
+              <feGaussianBlur stdDeviation="1.8" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+
+            <!-- Piel: luz desde arriba-izquierda, sombra hacia la cola -->
+            <linearGradient id="body-shade" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#4d514b" />
+              <stop offset="50%" stop-color="#34372f" />
+              <stop offset="100%" stop-color="#1b1d19" />
+            </linearGradient>
+
+            <linearGradient id="limb-far" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#2b2e28" />
+              <stop offset="100%" stop-color="#151713" />
+            </linearGradient>
+
+            <linearGradient id="belly-shade" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#666356" />
+              <stop offset="100%" stop-color="#3d3c34" />
+            </linearGradient>
+
+            <!-- Borde de luz verde del sonar sobre el lomo -->
+            <linearGradient id="rim-light" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#22c55e" stop-opacity="0.6" />
+              <stop offset="100%" stop-color="#22c55e" stop-opacity="0.05" />
+            </linearGradient>
+
+            <!-- Textura de escamas -->
+            <pattern id="scales" width="9" height="8" patternUnits="userSpaceOnUse">
+              <path d="M 0 8 Q 4.5 2 9 8" fill="none" stroke="#000" stroke-opacity="0.22" stroke-width="1" />
+              <path d="M -4.5 4 Q 0 -2 4.5 4 M 4.5 4 Q 9 -2 13.5 4" fill="none" stroke="#000" stroke-opacity="0.16" stroke-width="1" />
+            </pattern>
+
+            <linearGradient id="atomic-beam" x1="100%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset="35%" stop-color="#7ffaff" stop-opacity="0.95"/>
+              <stop offset="100%" stop-color="#00f3ff" stop-opacity="0.25"/>
+            </linearGradient>
+
+            <!-- Silueta: hocico alargado, mandíbula abierta, cuello grueso, lomo arqueado, vientre y cola larga -->
+            <path id="body-silhouette" d="
+              M 12 66
+              C 20 56 40 50 60 46
+              C 72 43 80 36 96 36
+              C 114 36 128 44 136 54
+              C 162 70 188 92 208 118
+              C 238 154 264 200 278 246
+              C 292 290 330 322 362 322
+              C 378 320 388 310 396 296
+              C 394 318 386 340 366 352
+              C 330 368 280 364 246 352
+              L 196 346
+              C 150 330 104 296 98 250
+              C 94 214 104 184 112 162
+              C 116 146 114 130 108 118
+              C 104 112 100 110 96 110
+              C 76 110 50 108 30 104
+              L 22 100
+              C 40 95 60 92 82 88
+              L 90 82
+              C 70 78 40 76 20 74
+              C 12 72 10 70 12 66
+              Z" />
+
+            <clipPath id="body-clip">
+              <use href="#body-silhouette" />
+            </clipPath>
+          </defs>
+
+          <!-- Sonar de Fondo Táctico -->
+          <g id="sonar-background" opacity="0.3">
+            <circle cx="200" cy="200" r="175" stroke="#22c55e" stroke-width="1" stroke-dasharray="6 4" fill="none" />
+            <circle cx="200" cy="200" r="115" stroke="#22c55e" stroke-width="1" stroke-dasharray="3 3" fill="none" />
+            <circle cx="200" cy="200" r="55" stroke="#22c55e" stroke-width="1" stroke-dasharray="2 4" fill="none" />
+            <line x1="20" y1="200" x2="380" y2="200" stroke="#22c55e" stroke-width="1" />
+            <line x1="200" y1="20" x2="200" y2="380" stroke="#22c55e" stroke-width="1" />
+          </g>
+
+          <!-- Sombra en el suelo -->
+          <ellipse cx="250" cy="380" rx="150" ry="8" fill="#22c55e" opacity="0.1" />
+
+          <!-- GODZILLA KAIJU -->
+          <g id="godzilla-character" stroke="#0b0c0a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+
+            <!-- PATA TRASERA (FONDO) -->
+            <g id="back-leg">
+              <path d="M 252 276 C 284 266 312 298 304 330 L 300 360 C 316 362 330 368 330 375 C 330 379 325 380 318 380 L 252 380 C 244 380 244 372 252 368 L 264 360 C 250 334 240 298 252 276 Z" fill="url(#limb-far)" />
+              <g fill="#bdb8ad" stroke-width="1.4">
+                <path d="M 253.3 369.1 Q 247.6 372.6 244.3 376.4 Q 249.1 373.2 254.7 374.9 Z" />
+                <path d="M 255.7 375.4 Q 249.8 378.0 246.0 381.0 Q 251.0 378.5 256.3 380.6 Z" />
+              </g>
+            </g>
+
+            <!-- BRAZO TRASERO (FONDO) -->
+            <g id="back-arm">
+              <path d="M 156 158 C 174 162 180 180 172 194 L 152 210 C 146 214 140 214 138 210 L 136 204 L 148 192 C 142 182 142 164 156 158 Z" fill="url(#limb-far)" />
+              <g fill="#2b2e28" stroke-width="1.6">
+                <path d="M 140 204 C 134 202 130 202 128 204 C 130 208 134 208 140 208 Z" />
+                <path d="M 142 210 C 136 212 132 214 132 216 C 136 218 140 216 144 212 Z" />
+              </g>
+              <g fill="#bdb8ad" stroke-width="1.2">
+                <path d="M 128.6 203.0 Q 124.6 205.8 122.1 208.4 Q 125.6 205.7 129.4 207.0 Z" />
+                <path d="M 132.0 213.3 Q 128.6 217.1 126.9 220.4 Q 129.9 216.7 134.0 216.7 Z" />
+              </g>
+            </g>
+
+            <!-- PLACAS DORSALES IRREGULARES (5 = nuca ... 1 = punta de la cola) -->
+            <g id="dorsal-spines-interactive" fill="#3d4450" stroke-width="2">
+              <g id="spine-5" class="spine-off">
+                <path d="M 127.8,55.8 L 131.1,54.5 L 132.6,50.9 L 139.4,50.2 L 140.4,46.9 L 148.0,46.0 L 150.7,42.2 L 158.9,40.9 L 157.9,54.4 L 153.5,57.0 L 153.8,62.7 L 149.2,65.2 L 147.8,68.7 Z" />
+                <path d="M 143.3,65.7 L 146.1,64.8 L 147.0,62.1 L 153.1,61.6 L 154.7,58.8 L 160.4,58.6 L 161.5,56.1 L 169.6,55.0 L 168.1,66.1 L 164.4,68.0 L 164.3,72.7 L 160.5,74.5 L 159.1,77.3 Z" />
+                <path d="M 150.2,70.2 L 156.0,68.3 L 162.1,62.5 L 171.7,62.2 L 177.3,57.0 L 193.1,56.0 L 184.8,78.3 L 177.1,83.1 L 173.6,89.2 Z" />
+                <path d="M 168.4,84.7 L 171.1,84.4 L 171.5,81.7 L 178.0,82.6 L 178.7,79.9 L 184.9,81.0 L 186.4,78.2 L 192.1,79.6 L 192.9,77.1 L 201.6,78.3 L 199.8,88.3 L 195.8,89.0 L 196.0,93.7 L 191.8,94.3 L 192.0,98.9 L 187.8,99.5 L 186.5,101.8 Z" />
+              </g>
+              <g id="spine-4" class="spine-off">
+                <path d="M 176.4,91.3 L 182.2,90.5 L 186.8,85.1 L 197.3,86.6 L 202.5,81.3 L 212.8,83.1 L 216.3,78.5 L 233.6,80.3 L 224.8,100.3 L 216.6,102.9 L 214.6,112.0 L 206.2,114.3 L 202.5,119.4 Z" />
+                <path d="M 196.5,113.2 L 202.5,112.9 L 208.2,109.0 L 218.7,111.1 L 223.5,107.5 L 239.4,109.3 L 228.9,130.1 L 220.7,132.9 L 216.3,137.8 Z" />
+                <path d="M 205.5,123.1 L 211.1,123.3 L 216.2,117.7 L 225.8,121.9 L 229.6,116.6 L 240.6,120.8 L 246.5,115.5 L 255.7,120.1 L 259.5,115.3 L 275.0,119.7 L 267.0,139.7 L 258.6,139.9 L 256.8,149.4 L 248.1,149.3 L 246.2,158.5 L 237.5,158.3 L 233.7,162.6 Z" />
+              </g>
+              <g id="spine-3" class="spine-off">
+                <path d="M 229.8,157.1 L 234.2,157.7 L 237.1,154.4 L 246.0,157.9 L 249.5,154.9 L 258.1,158.6 L 262.3,155.9 L 273.7,160.3 L 265.0,174.6 L 258.6,174.9 L 256.0,181.6 L 249.4,181.5 L 246.0,184.7 Z" />
+                <path d="M 239.3,172.2 L 247.5,173.0 L 255.2,169.0 L 270.1,173.9 L 279.1,170.4 L 300.2,178.4 L 277.6,200.7 L 265.5,202.6 L 257.8,208.2 Z" />
+                <path d="M 255.4,203.6 L 258.2,204.4 L 260.4,202.1 L 265.5,205.5 L 268.9,203.5 L 272.8,206.8 L 274.5,204.5 L 280.3,208.3 L 283.0,206.5 L 290.3,211.8 L 284.0,219.7 L 279.8,218.8 L 278.0,223.4 L 273.8,222.2 L 272.0,226.7 L 267.7,225.5 L 265.5,227.2 Z" />
+              </g>
+              <g id="spine-2" class="spine-off">
+                <path d="M 261.3,216.5 L 266.3,217.6 L 272.4,214.8 L 280.1,219.3 L 286.0,216.7 L 294.1,221.5 L 300.1,219.2 L 312.1,225.5 L 297.8,239.0 L 290.2,238.5 L 285.2,245.1 L 277.5,244.3 L 272.6,247.2 Z" />
+                <path d="M 270.6,243.7 L 273.7,244.5 L 277.0,242.7 L 282.2,245.7 L 285.8,244.1 L 290.7,247.2 L 293.3,245.6 L 301.9,250.4 L 293.2,258.4 L 288.5,258.0 L 285.6,262.2 L 280.8,261.6 L 277.9,263.3 Z" />
+                <path d="M 274.4,255.6 L 277.7,256.1 L 280.0,253.3 L 286.3,256.3 L 289.0,253.5 L 295.1,256.6 L 298.5,254.0 L 303.9,257.2 L 305.8,254.7 L 315.4,258.8 L 308.3,268.9 L 303.4,268.4 L 301.3,273.6 L 296.3,273.0 L 294.1,278.0 L 289.1,277.3 L 286.4,279.5 Z" />
+                <path d="M 285.6,277.3 L 288.9,277.4 L 292.0,275.4 L 297.7,276.9 L 300.6,275.1 L 309.2,276.9 L 302.7,287.5 L 298.2,288.7 L 295.7,291.3 Z" />
+              </g>
+              <g id="spine-1" class="spine-off">
+                <path d="M 291.2,286.0 L 293.9,285.7 L 295.4,282.9 L 300.9,283.9 L 303.4,280.9 L 308.0,282.2 L 309.0,279.6 L 315.2,280.7 L 317.1,278.1 L 324.9,279.5 L 321.2,289.1 L 317.2,289.8 L 316.6,294.4 L 312.4,295.0 L 311.7,299.5 L 307.5,300.1 L 305.8,302.4 Z" />
+                <path d="M 304.6,300.9 L 306.3,300.5 L 307.5,298.5 L 310.5,298.9 L 311.1,297.1 L 314.8,297.4 L 315.6,295.6 L 319.3,295.9 L 320.1,294.2 L 325.6,294.8 L 323.7,300.8 L 321.3,301.5 L 321.3,304.4 L 318.7,305.1 L 318.7,308.0 L 316.1,308.6 L 315.3,310.2 Z" />
+                <path d="M 310.8,306.8 L 313.5,305.7 L 314.5,302.9 L 320.4,302.0 L 321.7,299.3 L 327.6,298.5 L 329.8,295.5 L 336.5,294.1 L 334.7,305.5 L 331.0,307.7 L 330.7,312.3 L 326.9,314.4 L 325.5,317.3 Z" />
+                <path d="M 324.4,316.4 L 326.0,315.6 L 326.5,313.7 L 329.9,313.0 L 330.3,311.3 L 334.1,310.5 L 334.9,308.6 L 339.6,307.5 L 339.2,314.3 L 337.1,315.8 L 337.4,318.6 L 335.2,320.1 L 334.6,321.9 Z" />
+                <path d="M 330.6,320.1 L 332.5,318.8 L 333.3,316.0 L 337.2,314.9 L 338.0,312.3 L 342.1,311.1 L 343.2,308.5 L 349.2,306.7 L 349.2,315.2 L 346.7,317.5 L 347.5,321.1 L 344.9,323.3 L 344.5,325.7 Z" />
+                <path d="M 343.7,325.3 L 344.5,324.6 L 344.3,323.5 L 346.5,322.7 L 346.3,321.6 L 348.5,320.8 L 348.4,319.6 L 350.6,318.9 L 350.5,317.8 L 353.3,316.6 L 354.9,320.3 L 353.7,321.4 L 354.7,322.9 L 353.4,323.9 L 354.3,325.4 L 353.0,326.4 L 353.1,327.5 Z" />
+                <path d="M 349.5,326.9 L 350.6,325.7 L 350.0,324.1 L 352.9,322.2 L 352.4,320.4 L 355.2,318.6 L 354.7,317.1 L 357.7,315.1 L 357.2,313.7 L 360.9,310.7 L 363.4,316.4 L 361.9,318.3 L 363.4,320.6 L 361.9,322.5 L 363.3,324.7 L 361.7,326.6 L 361.9,328.3 Z" />
+                <path d="M 361.7,328.3 L 362.3,327.3 L 361.9,326.0 L 363.6,324.5 L 363.0,323.6 L 364.9,321.7 L 364.6,320.7 L 367.0,318.2 L 369.8,321.3 L 369.2,322.9 L 370.7,324.0 L 370.1,325.5 L 370.5,326.6 Z" />
+                <path d="M 368.4,327.2 L 368.8,325.7 L 367.9,324.0 L 369.3,321.5 L 368.5,319.9 L 370.0,317.3 L 369.2,315.9 L 371.3,311.8 L 375.4,316.1 L 375.3,318.4 L 377.3,319.8 L 377.1,322.2 L 377.9,323.6 Z" />
+                <path d="M 376.8,324.2 L 377.0,323.3 L 376.1,322.7 L 377.1,321.0 L 376.3,320.6 L 377.4,318.6 L 376.5,318.2 L 377.7,316.2 L 376.9,315.6 L 378.2,313.1 L 381.4,314.3 L 381.2,315.6 L 382.8,315.9 L 382.5,317.2 L 384.1,317.5 L 383.8,318.9 L 384.4,319.5 Z" />
+                <path d="M 383.1,320.5 L 382.9,319.2 L 381.8,318.1 L 382.2,315.7 L 381.1,314.8 L 381.6,312.1 L 380.5,310.6 L 381.1,307.4 L 385.8,309.4 L 386.3,311.3 L 388.3,311.8 L 388.8,313.8 L 389.9,314.6 Z" />
+                <path d="M 388.5,316.0 L 388.5,314.7 L 387.6,313.6 L 388.3,311.1 L 387.5,310.2 L 388.6,306.2 L 392.9,307.2 L 393.4,308.8 L 394.5,309.4 Z" />
+                <path d="M 393.3,310.9 L 393.1,309.9 L 392.2,309.4 L 392.5,307.2 L 391.5,306.5 L 391.9,304.5 L 391.0,304.0 L 391.3,300.9 L 395.1,300.8 L 395.5,302.2 L 397.2,301.8 L 397.6,303.3 L 398.5,303.6 Z" />
+              </g>
+            </g>
+
+            <!-- SILUETA PRINCIPAL -->
+            <g id="main-body-structure">
+              <!-- Interior de la boca y lengua -->
+              <path d="M 16 74 L 92 82 L 84 90 L 24 102 Z" fill="#3a0b0e" stroke="none" />
+              <path d="M 40 94 C 56 88 72 86 86 86 L 84 90 C 70 92 56 94 40 96 Z" fill="#8a2a30" stroke="none" />
+
+              <use href="#body-silhouette" fill="url(#body-shade)" />
+
+              <!-- Textura, vientre y luz de borde recortados a la silueta -->
+              <g clip-path="url(#body-clip)" stroke="none">
+                <rect x="0" y="0" width="400" height="400" fill="url(#scales)" />
+                <path d="M 100 118 C 116 140 114 170 110 200 C 106 240 120 290 196 346 L 140 346 C 100 310 86 250 92 200 C 96 160 100 140 90 116 Z" fill="url(#belly-shade)" opacity="0.9" />
+                <path d="M 96 114 C 80 116 50 112 26 106 L 20 120 L 100 124 Z" fill="#5a584d" opacity="0.6" />
+                <path d="M 12 66 C 20 56 40 50 60 46 C 72 43 80 36 96 36 C 114 36 128 44 136 54 C 162 70 188 92 208 118 C 238 154 264 200 278 246 C 292 290 330 322 362 322" fill="none" stroke="url(#rim-light)" stroke-width="5" />
+              </g>
+
+              <!-- Placas ventrales -->
+              <g fill="none" stroke="#24241e" stroke-width="1.6" opacity="0.85">
+                <path d="M 108 140 C 112 142 116 142 120 140" />
+                <path d="M 106 160 C 111 162 117 162 122 159" />
+                <path d="M 103 180 C 109 183 116 183 122 179" />
+                <path d="M 101 200 C 107 203 115 203 122 199" />
+                <path d="M 100 220 C 106 224 115 224 122 219" />
+                <path d="M 101 240 C 107 244 116 244 124 239" />
+                <path d="M 104 260 C 110 264 119 264 128 258" />
+                <path d="M 110 280 C 116 284 125 284 134 278" />
+              </g>
+
+              <!-- PATA DELANTERA: MUSLO MASIVO Y PIE ANCHO -->
+              <g id="front-leg">
+                <path d="M 162 248 C 204 222 266 244 272 296 C 276 322 258 338 240 344 L 238 358 C 248 362 256 368 254 375 C 253 379 248 380 242 380 L 136 380 C 126 380 124 370 134 366 L 168 356 C 156 330 144 300 146 280 C 148 266 154 254 162 248 Z" fill="url(#body-shade)" />
+                <path d="M 172 262 C 204 248 244 262 254 294" fill="none" stroke="#61655c" stroke-width="2" opacity="0.7" />
+                <path d="M 200 300 C 212 318 226 332 238 344" fill="none" stroke="#151612" stroke-width="2" />
+                <path d="M 170 356 C 180 352 200 350 236 356" fill="none" stroke="#151612" stroke-width="1.6" />
+                <g fill="none" stroke="#151612" stroke-width="1.5">
+                  <path d="M 158 380 L 160 368" />
+                  <path d="M 182 380 L 184 366" />
+                </g>
+                <g fill="#ebe6da" stroke-width="1.4">
+                  <path d="M 134.8 367.6 Q 128.3 372.2 124.7 377.0 Q 130.3 373.0 137.2 374.4 Z" />
+                  <path d="M 157.0 370.6 Q 150.3 374.8 146.5 379.4 Q 152.3 375.7 159.0 377.4 Z" />
+                  <path d="M 180.2 371.7 Q 173.9 375.5 170.3 379.7 Q 175.7 376.3 181.8 378.3 Z" />
+                </g>
+              </g>
+
+              <!-- BRAZO DELANTERO CORTO CON DEDOS Y GARRAS -->
+              <g id="front-arm">
+                <path d="M 136 150 C 156 152 164 172 156 190 L 134 208 C 128 212 122 212 120 208 L 118 200 L 132 188 C 126 176 124 156 136 150 Z" fill="url(#body-shade)" />
+                <path d="M 142 160 C 150 168 150 180 144 188" fill="none" stroke="#151612" stroke-width="1.6" />
+                <!-- Dedos -->
+                <g fill="url(#body-shade)" stroke-width="1.6">
+                  <path d="M 122 198 C 114 194 108 194 106 196 C 108 201 114 202 122 203 Z" />
+                  <path d="M 122 204 C 114 204 108 206 107 209 C 111 212 117 211 124 208 Z" />
+                  <path d="M 126 209 C 120 213 116 217 117 220 C 121 221 126 217 130 211 Z" />
+                </g>
+                <g fill="#ebe6da" stroke-width="1.2">
+                  <path d="M 106.8 194.8 Q 102.0 197.2 99.0 199.8 Q 103.0 197.4 107.2 199.2 Z" />
+                  <path d="M 107.3 206.9 Q 102.9 210.4 100.4 213.6 Q 104.2 210.3 108.7 211.1 Z" />
+                  <path d="M 116.2 217.7 Q 113.7 223.3 113.2 227.4 Q 115.6 222.2 119.8 220.3 Z" />
+                </g>
+              </g>
+
+              <!-- DETALLES DE LA CABEZA -->
+              <g id="head-details" stroke-width="2">
+                <g fill="#f1ece0" stroke="#0b0c0a" stroke-width="0.9">
+                  <polygon points="82.4,80.1 85.4,86.1 87.6,80.1" />
+                  <polygon points="73.0,78.6 76.0,84.6 78.2,78.6" />
+                  <polygon points="62.8,77.4 65.8,84.9 68.0,77.4" />
+                  <polygon points="52.4,76.2 55.4,82.2 57.6,76.2" />
+                  <polygon points="42.7,75.3 45.7,81.3 47.9,75.3" />
+                  <polygon points="33.3,74.5 36.3,82.0 38.5,74.5" />
+                  <polygon points="25.0,73.7 28.0,79.7 30.2,73.7" />
+                  <polygon points="26.5,99.6 28.5,92.6 31.3,99.6" />
+                  <polygon points="34.9,97.5 36.9,92.0 39.7,97.5" />
+                  <polygon points="43.7,95.5 45.7,90.0 48.5,95.5" />
+                  <polygon points="53.1,93.7 55.1,86.7 57.9,93.7" />
+                  <polygon points="62.9,92.0 64.9,86.5 67.7,92.0" />
+                  <polygon points="71.8,90.4 73.8,84.9 76.6,90.4" />
+                </g>
+                <!-- Ceja ósea prominente que cubre el ojo -->
+                <path d="M 62 50 C 72 42 88 40 104 46 C 100 50 92 52 84 52 C 76 52 68 52 62 50 Z" fill="#4b4f48" stroke-width="2" />
+                <!-- Ojo pequeño -->
+                <path d="M 78 54 L 88 54 L 85 58 L 79 58 Z" fill="#ff2a1a" stroke="#000" stroke-width="0.9" filter="url(#eye-glow)" />
+                <circle cx="82" cy="55.6" r="0.8" fill="#fff6c8" stroke="none" />
+                <!-- Narina y crestas del hocico -->
+                <ellipse cx="22" cy="64" rx="2.2" ry="1.3" fill="#0b0c0a" stroke="none" transform="rotate(-20 22 64)" />
+                <path d="M 30 60 C 40 56 50 54 60 54" fill="none" stroke-width="1.2" opacity="0.7" />
+                <path d="M 104 46 C 114 50 122 58 124 68" fill="none" stroke-width="1.4" opacity="0.7" />
+                <!-- Bisagra de la mandíbula -->
+                <path d="M 90 82 C 98 86 104 94 104 104" fill="none" stroke-width="1.6" />
+              </g>
+
+              <!-- PLIEGUES DEL CUELLO GRUESO Y MÚSCULOS -->
+              <g id="muscle-lines" fill="none" stroke="#151612" stroke-width="1.8" stroke-linecap="round" opacity="0.85">
+                <path d="M 126 78 C 132 92 134 106 132 120" />
+                <path d="M 142 80 C 150 96 152 112 150 128" />
+                <path d="M 158 92 C 166 108 168 124 166 140" />
+                <path d="M 182 140 C 196 162 202 186 202 210" />
+                <path d="M 292 328 C 306 336 322 342 340 344" />
+                <path d="M 330 350 C 346 350 362 344 374 334" />
+              </g>
+            </g>
+          </g>
+
+          <!-- ALIENTO ATÓMICO (Se activa al 100% de carga) -->
+          <g id="atomic-breath" opacity="0" filter="url(#atomic-glow)">
+            <path d="M 30 88 L -40 -20 L -60 50 Z" fill="url(#atomic-beam)" />
+            <path d="M 30 88 L -30 0 L -44 30 Z" fill="#ffffff" opacity="0.9" />
+            <circle cx="26" cy="86" r="11" fill="#ffffff" />
+            <circle cx="6" cy="60" r="18" fill="#7ffaff" opacity="0.7" />
+          </g>
+        </svg>
+      </div>
+      <p class="caption"></p>
+    </section>
+
+    <!-- CONSOLA DEL MANÓMETRO DE PRESIÓN -->
+    <section class="pressure-console">
+      <h2 class="console-title">PRESION HIDRAULICA DEL REACTOR</h2>
+      <p class="console-desc">
+        Mantén presionado el detonador para elevar la presión a 150 PSI y romper la contención.
+      </p>
+
+      <div class="gauge-container">
+        <div id="pressure-bar" class="pressure-bar" style="width: 0%;"></div>
+        <span id="pressure-readout" class="pressure-readout">32 PSI</span>
+      </div>
+
+      <div id="gauge-status" class="gauge-status">ACCESO DENEGADO // DESACTIVA TODOS LOS SISTEMAS</div>
+
+      <button id="btn-charge" class="detonator-btn" disabled>
+        [ MANTENER PARA PRESURIZAR EL REACTOR ]
+      </button>
+    </section>
+
+  </main>
+
+  <!-- FASE 3: CARTA DE REGISTRO FINAL -->
+  <section id="birthday-card" class="card-overlay hidden">
+    <div class="card-steel">
+      
+      <header class="card-header">
+        <div class="emblem">⚓ 🦖</div>
+        <h2>MISION CUMPLIDA HAS LIBERADO AL KAIJU</h2>
+        <p class="card-subtitle">DOCUMENTO OFICIAL // SECTOR 09</p>
+      </header>
+
+      <article class="card-body">
+        <p>
+        Hoy ayudaste a liberar una fuerza que el mundo nunca debió encadenar. Y hoy también celebramos el nacimiento de alguien capaz de hacer historia.
+        </p>
+        <p>
+        </p>
+        
+        <h3 class="card-highlight">¡FELIZ CUMPLEAÑOS SUEMY!</h3>
+        <p class="highlight-sub">Eres una persona muy genial y divertida. Aunque no hace tanto que volvimos a hablar, cada vez que lo hacemos me divierto mucho (como con el chiste del caballo) y la paso muy bien contigo. Me alegro que hayamos vuelto a hablar y espero que sigamos hablando y pasandola bien.
+           Te deseo lo mejor y espero que disfrutes muchísimo tu día, que te la pases increíble y que te consientan mucho.
+
+          ¡Feliz cumpleaños, nerd de Godzilla y fanática de los juegos gacha! 🦖🎮
+          no es la sorpresa que tenia en mente darte pero espero que igual te guste.</p>
+        
+        <blockquote class="quote">
+          "Como el brillo atomico de godzilla, tus ojos cautivan a quien los mira"
+        </blockquote>
+      </article>
+
+      <footer class="card-footer">
+        <button id="btn-replay" class="replay-btn">
+          <span class="icon"></span> REPETIR OPERACIÓN
+        </button>
+      </footer>
+
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

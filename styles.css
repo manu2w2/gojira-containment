@@ -1,0 +1,572 @@
+/* ==========================================================================
+   VARIABLES GLOBALES: SISTEMA NAVAL Y TÁCTICO
+   ========================================================================== */
+:root {
+  --hull-bg: #080b10;
+  --panel-base: #11151c;
+  --panel-border: #1e293b;
+  --panel-highlight: #334155;
+
+  --sonar-green: #15803d;
+  --sonar-glow: #22c55e;
+  --alert-amber: #d29922;
+  --alert-red: #f85149;
+  --titan-cyan: #a93ef5;
+  --titan-core: #ffffff;
+
+  --font-tactical: 'Chakra Petch', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-reading: 'Montserrat', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--hull-bg);
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.5) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.5) 2px, transparent 2px);
+  background-size: 100px 100px;
+  color: #8b949e;
+  font-family: var(--font-mono);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   EFECTOS GLOBALES (CRT & FLASHBANG)
+   ========================================================================== */
+#crt-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: 
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%),
+    radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.95) 100%);
+  background-size: 100% 4px, 100% 100%;
+  pointer-events: none;
+  z-index: 999;
+}
+
+#flashbang {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: var(--titan-core);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000;
+  transition: opacity 0.1s ease-in, opacity 2.5s ease-out;
+}
+
+#flashbang.active {
+  opacity: 1;
+}
+
+#particles-container {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 500;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--titan-cyan);
+  box-shadow: 0 0 10px var(--titan-cyan);
+  animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+}
+
+/* ==========================================================================
+   FASE 1: TERMINAL TÁCTICA
+   ========================================================================== */
+.terminal-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.bunker-panel {
+  background: var(--panel-base);
+  border: 2px solid var(--panel-border);
+  box-shadow: 
+    inset 0 0 20px rgba(0,0,0,0.8),
+    0 10px 30px rgba(0,0,0,0.9);
+  border-radius: 8px;
+  max-width: 650px;
+  width: 100%;
+  padding: 35px;
+  position: relative;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 2px solid var(--panel-border);
+  padding-bottom: 12px;
+  margin-bottom: 25px;
+}
+
+.status-beacon {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background-color: var(--alert-amber);
+  box-shadow: 0 0 10px var(--alert-amber);
+  animation: beaconPulse 1.5s infinite;
+}
+
+@keyframes beaconPulse {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; box-shadow: 0 0 15px var(--alert-amber); }
+  100% { opacity: 0.4; }
+}
+
+.sys-code {
+  color: var(--panel-highlight);
+  font-size: 0.9rem;
+}
+
+.terminal-title {
+  font-family: var(--font-tactical);
+  font-size: 2.2rem;
+  color: #e2e8f0;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.security-badge {
+  display: inline-block;
+  background: rgba(210, 153, 34, 0.1);
+  color: var(--alert-amber);
+  border: 1px solid var(--alert-amber);
+  padding: 5px 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  border-radius: 3px;
+  margin-bottom: 25px;
+}
+
+.terminal-body {
+  font-family: var(--font-mono);
+  color: #94a3b8;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 35px;
+}
+
+.tactical-btn {
+  width: 100%;
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  font-family: var(--font-tactical);
+  font-size: 1.4rem;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 4px;
+}
+
+.tactical-btn:hover {
+  background: var(--titan-cyan);
+  color: #000;
+  border-color: var(--titan-cyan);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+}
+
+/* ==========================================================================
+   FASE 2: CONSOLA Y FICHA TÉCNICA
+   ========================================================================== */
+.dossier-container {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.dossier-header {
+  text-align: center;
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 20px;
+}
+
+.classification-tag {
+  color: #64748b;
+  font-size: 0.9rem;
+  letter-spacing: 4px;
+}
+
+.glitch-title {
+  font-family: var(--font-tactical);
+  font-size: 2.8rem;
+  color: #e2e8f0;
+  margin: 10px 0;
+}
+
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.info-card {
+  background: var(--panel-base);
+  border: 1px solid var(--panel-border);
+  border-left: 4px solid var(--panel-highlight);
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-label { font-size: 0.75rem; color: #64748b; }
+.card-value { font-size: 1.1rem; color: #e2e8f0; font-weight: bold; }
+
+.highlight-amber { color: var(--alert-amber); }
+.highlight-cyan { color: var(--titan-cyan); }
+
+/* VISUAL SONAR Y SVG */
+.sonar-display {
+  background: radial-gradient(circle, #03140a 0%, #020617 75%);
+  border: 4px solid var(--panel-base);
+  box-shadow: inset 0 0 50px rgba(0,0,0,1);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.radar-sweep {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 200%; height: 200%;
+  transform-origin: 0 0;
+  /* Se invirtió el gradiente: ahora la cola va por detrás y la línea verde lidera el barrido */
+  background: conic-gradient(from 0deg, transparent 270deg, rgba(34, 197, 94, 0.4) 360deg);
+  animation: sweep 4s linear infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes sweep {
+  0% { transform: rotate(0deg) translate(-50%, -50%); }
+  100% { transform: rotate(360deg) translate(-50%, -50%); }
+}
+
+.svg-wrapper {
+  max-width: 400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.godzilla-svg {
+  width: 100%; height: auto;
+}
+
+.caption {
+  margin-top: 15px;
+  font-size: 0.85rem;
+  color: var(--sonar-glow);
+}
+
+.spine-off {
+  transition: all 0.4s ease;
+}
+
+.spine-on {
+  transition: all 0.4s ease;
+  fill: #00f3ff !important;
+  filter: drop-shadow(0 0 10px #00f3ff);
+}
+
+#atomic-breath {
+  transition: opacity 0.3s ease;
+}
+
+/* ==========================================================================
+   PALANCAS Y MANÓMETRO
+   ========================================================================== */
+.failsafe-section, .pressure-console {
+  background: var(--panel-base);
+  border: 1px solid var(--panel-border);
+  padding: 25px;
+  border-radius: 8px;
+}
+
+.section-title, .console-title {
+  font-family: var(--font-tactical);
+  color: #cbd5e1;
+  font-size: 1.4rem;
+  margin-bottom: 5px;
+}
+
+.switches-grid {
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.switch-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  background: #0f172a;
+  padding: 15px 20px;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  min-width: 140px;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 40px; height: 80px;
+  background: #020617;
+  border-radius: 4px;
+  border: 2px solid #334155;
+  cursor: pointer;
+}
+
+.safety-switch { opacity: 0; width: 0; height: 0; }
+
+.toggle-lever {
+  position: absolute;
+  bottom: 5px; left: 50%;
+  transform: translateX(-50%);
+  width: 24px; height: 35px;
+  background: linear-gradient(to bottom, #94a3b8, #475569);
+  border-radius: 3px;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.safety-switch:checked + .toggle-lever {
+  bottom: calc(100% - 40px);
+  background: linear-gradient(to bottom, #cbd5e1, #94a3b8);
+}
+
+.status-led {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.status-led.red {
+  color: #fca5a5; background: rgba(248, 81, 73, 0.2);
+  border: 1px solid var(--alert-red);
+}
+
+.status-led.green {
+  color: #86efac; background: rgba(34, 197, 94, 0.2);
+  border: 1px solid var(--sonar-glow);
+}
+
+.gauge-container {
+  position: relative;
+  background: #020617;
+  border: 3px solid #334155;
+  height: 45px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.pressure-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #15803d 0%, #d29922 60%, var(--titan-cyan) 100%);
+  transition: width 0.1s linear;
+}
+
+.pressure-readout {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-tactical);
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.gauge-status {
+  font-size: 0.85rem;
+  color: var(--alert-red);
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+.gauge-status.ready { color: var(--sonar-glow); }
+
+.detonator-btn {
+  width: 100%;
+  background: #1e293b;
+  color: #64748b;
+  border: 2px solid #334155;
+  font-family: var(--font-tactical);
+  font-size: 1.4rem;
+  padding: 18px;
+  border-radius: 6px;
+  cursor: not-allowed;
+}
+
+.detonator-btn:not([disabled]) {
+  background: #7f1d1d;
+  color: #fca5a5;
+  border-color: #dc2626;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   FASE 3: CARTA FINAL (OPTIMIZADA PARA MÓVILES)
+   ========================================================================== */
+.card-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(2, 6, 23, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 800;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.card-steel {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #334155;
+  border-top: 3px solid var(--titan-cyan);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+  border-radius: 8px;
+  max-width: 600px;
+  width: 100%;
+  padding: 40px 30px;
+  color: #e2e8f0;
+  font-family: var(--font-reading);
+  margin: auto;
+}
+
+.card-header { text-align: center; margin-bottom: 25px; }
+.emblem { font-size: 2.8rem; margin-bottom: 10px; }
+
+.card-header h2 {
+  font-family: var(--font-tactical);
+  font-size: 2rem;
+  color: #f1f5f9;
+}
+
+.card-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--titan-cyan);
+  margin-top: 6px;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.card-highlight {
+  font-family: var(--font-tactical);
+  font-size: 1.8rem;
+  color: var(--titan-cyan);
+  text-align: center;
+  margin-top: 10px;
+}
+
+.highlight-sub { text-align: center; font-weight: 600; color: #cbd5e1; }
+
+.quote {
+  border-left: 4px solid #475569;
+  font-style: italic;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  background: rgba(30, 41, 59, 0.4);
+  padding: 12px 16px;
+  border-radius: 0 4px 4px 0;
+}
+
+.card-footer { text-align: center; }
+
+.replay-btn {
+  margin-top: 25px;
+  background: transparent;
+  color: #cbd5e1;
+  border: 1px solid #475569;
+  font-family: var(--font-mono);
+  padding: 12px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* RESPONSIVE DESIGN - TELÉFONOS MÓVILES */
+@media (max-width: 600px) {
+  .glitch-title { font-size: 2rem; }
+  .bunker-panel, .dossier-container { padding: 20px 15px; }
+  
+  .card-overlay {
+    padding: 12px;
+    align-items: flex-start; /* Permite scroll completo sin cortar arriba */
+  }
+
+  .card-steel {
+    padding: 25px 18px;
+    margin: 15px 0;
+    border-radius: 6px;
+  }
+
+  .card-header h2 { font-size: 1.5rem; }
+  .card-highlight { font-size: 1.4rem; }
+  .card-body { font-size: 0.92rem; gap: 12px; }
+  .emblem { font-size: 2.2rem; }
+  
+  .switches-grid { flex-direction: column; width: 100%; }
+  .switch-card { width: 100%; }
+}
+/* ==========================================================================
+   TEMBLOR DE PANTALLA SEGÚN LA PRESIÓN
+   ========================================================================== */
+.shake-1 { animation: shake 0.35s linear infinite; --shake: 1.5px; }
+.shake-2 { animation: shake 0.2s linear infinite; --shake: 4px; }
+.shake-max { animation: shake 0.1s linear infinite; --shake: 8px; }
+
+@keyframes shake {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(calc(var(--shake) * -1), calc(var(--shake) * 0.5)) rotate(-0.3deg); }
+  50%  { transform: translate(var(--shake), calc(var(--shake) * -0.5)) rotate(0.3deg); }
+  75%  { transform: translate(calc(var(--shake) * -0.5), var(--shake)) rotate(-0.2deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shake-1, .shake-2, .shake-max { animation: none; }
+}
